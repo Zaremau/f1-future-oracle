@@ -1,0 +1,27 @@
+# Backend (Java/Maven)
+backend/target/
+*.class
+*.jar
+*.war
+
+# Frontend (Node.js)
+frontend/node_modules/
+frontend/dist/
+frontend/npm-debug.log
+
+# Python
+__pycache__/
+*.pyc
+python-sentiment/venv/
+
+# IDEs
+.idea/
+.vscode/
+*.iml
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Environment
+.env
