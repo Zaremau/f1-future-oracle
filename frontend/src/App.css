@@ -368,9 +368,16 @@ h2 {
   text-transform: uppercase;
 }
 
-.error-banner p {
-  color: #FFB3B3; /* Светло-красный текст */
-  font-size: 1rem;
-  margin: 0;
-}
+  .error-banner p {
+    color: #FFB3B3; 
+    font-size: 1rem;
+    margin: 0;
+  }
+  
+  .dnf-cell {
+    color: #E10600; 
+    font-weight: 700;
+    font-size: 0.9rem;
+    text-transform: uppercase; 
+  }
 }

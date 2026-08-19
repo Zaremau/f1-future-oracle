@@ -158,7 +158,9 @@ function GrandPrixDetailPage() {
             <tbody>
               {data.map((res, index) => (
                 <tr key={index} className={res.errorMargin > 2 ? 'error-row' : ''}>
-                  <td>{res.actualPosition}</td>
+                  <td className={res.actualPosition !== '1' ? 'dnf-cell' : ''}>
+                    {res.actualPosition}
+                  </td>
                   <td>{res.driverName}</td>
                   <td>{res.team}</td>
                   <td>{res.predictedPosition || '—'}</td>

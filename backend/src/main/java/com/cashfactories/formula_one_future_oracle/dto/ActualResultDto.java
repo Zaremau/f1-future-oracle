@@ -13,7 +13,7 @@ public class ActualResultDto {
     private String driverName;
     private String team;
     private Integer predictedPosition;
-    private Integer actualPosition;
+    private String actualPosition;
     private Integer errorMargin;
     private String explanation;
 }

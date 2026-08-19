@@ -33,6 +33,9 @@ public class ActualResult {
     @Column(name = "final_position")
     private Integer finalPosition;
 
+    @Column(name = "status", length = 10)
+    private String status; // FIN, DNF, DNS, DSQ
+
     @Column(name = "error_margin")
     private Integer errorMargin;
 

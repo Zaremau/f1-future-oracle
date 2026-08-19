@@ -320,6 +320,10 @@ databaseChangeLog:
                   name: final_position
                   type: int
               - column:
+                  name: status
+                  type: varchar(10)
+                  defaultValue: 'FIN'
+              - column:
                   name: error_margin
                   type: int
               - column:

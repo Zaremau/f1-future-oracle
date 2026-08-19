@@ -390,14 +390,37 @@ public class OpenF1Service {
             String url = BASE_URL + "/session_result?session_key=" + sessionKey;
             JsonNode results = restTemplate.getForObject(url, JsonNode.class);
 
+            int totalDrivers = results.size();
+
             if (results == null) return;
 
             for (JsonNode result : results) {
                 int driverNumber = result.path("driver_number").asInt();
                 int finalPosition = result.path("position").asInt();
 
+                boolean dnf = result.path("dnf").asBoolean(false);
+                boolean dns = result.path("dns").asBoolean(false);
+                boolean dsq = result.path("dsq").asBoolean(false);
+
+                String status = "FIN";
+
+                // Если API отдал 0 (не классифицирован) или статус схода
+                if (dns) {
+                    status = "DNS";
+                    finalPosition = totalDrivers;
+                } else if (dnf) {
+                    status = "DNF";
+                    if (finalPosition == 0) finalPosition = totalDrivers;
+                } else if (dsq || finalPosition == 0) {
+                    status = "DSQ";
+                    finalPosition = totalDrivers;
+                }
+
+
+                String finalStatus = status;
+                int finalPos = finalPosition;
                 driverRepo.findByDriverNumber(driverNumber).ifPresent(driver ->
-                        saveActualResult(gp, driver, finalPosition)
+                        saveActualResult(gp, driver, finalPos, finalStatus)
                 );
             }
 
@@ -418,7 +441,7 @@ public class OpenF1Service {
         }
     }
 
-    private void saveActualResult(GrandPrix gp, Driver driver, int finalPosition) {
+    private void saveActualResult(GrandPrix gp, Driver driver, int finalPosition, String status) {
         Prediction prediction = predictionRepo.findByGrandPrix_IdAndDriver_Id(gp.getId(), driver.getId());
 
         int errorMargin = 0;
@@ -445,6 +468,7 @@ public class OpenF1Service {
                 .grandPrix(gp)
                 .driver(driver)
                 .finalPosition(finalPosition)
+                .status(status)
                 .errorMargin(errorMargin)
                 .errorType(errorType)
                 .errorExplanation(explanation)

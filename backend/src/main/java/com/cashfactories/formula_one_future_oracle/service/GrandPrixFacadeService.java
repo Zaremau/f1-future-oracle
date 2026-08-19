@@ -103,15 +103,18 @@ public class GrandPrixFacadeService {
                     if (prediction == null) {
                         explanation = "Прогноз на эту гонку не строился.";
                     } else {
-                        // Защита от null, если explanation по какой-то причине не сформировался
                         explanation = res.getErrorExplanation() != null ? res.getErrorExplanation() : "Система не смогла объяснить ошибку.";
                     }
+
+                    String actualPositionStr = "FIN".equals(res.getStatus())
+                            ? String.valueOf(res.getFinalPosition())
+                            : res.getStatus();
 
                     return ActualResultDto.builder()
                             .driverName(res.getDriver().getName())
                             .team(res.getDriver().getTeam())
                             .predictedPosition(predictedPosition)
-                            .actualPosition(res.getFinalPosition())
+                            .actualPosition(actualPositionStr)
                             .errorMargin(res.getErrorMargin())
                             .explanation(explanation)
                             .build();
