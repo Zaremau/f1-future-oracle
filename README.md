@@ -4,13 +4,13 @@
 # F1 Predictor (Formula 1 Future Oracle) 🏎️
 
 **Тема:** Прогнозирование результатов Гран-при Формулы 1.
-**Стек:** Spring Boot (Java 21), PostgreSQL, React (Vite), Python (TextBlob), Docker, Liquibase, Testcontainers.
+**Стек:** Spring Boot (Java 17), PostgreSQL, React (Vite), Python (TextBlob), Docker, Liquibase, Testcontainers.
 
 ## Как запустить
 1. Убедитесь, что на вашем компьютере установлен **Docker Desktop**.
 2. Клонируйте репозиторий:
    ```bash
-   git clone <URL_ВАШЕГО_РЕПОЗИТОРИЯ>
+   git clone https://github.com/Zaremau/f1-future-oracle.git
    ```
 3. Перейдите в папку проекта и запустите сборку:
    ```bash
