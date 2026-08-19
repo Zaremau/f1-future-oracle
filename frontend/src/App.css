@@ -1,0 +1,376 @@
+@import url('https://fonts.googleapis.com/css2?family=Titillium+Web:wght@400;600;700;900&display=swap');
+
+body {
+  font-family: 'Titillium Web', 'Roboto', sans-serif;
+  background-color: #15151E; /* Темно-серый фон Ф1 */
+  color: #FFFFFF;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 30px 20px;
+}
+
+/* --- Шапка с логотипом --- */
+.app-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  margin-bottom: 40px;
+  padding-bottom: 20px;
+  border-bottom: 2px solid #2D2D3A;
+}
+
+.f1-text-logo {
+  font-family: 'Titillium Web', sans-serif;
+  font-size: 3rem;
+  font-weight: 900;
+  font-style: italic;
+  letter-spacing: -3px;
+  line-height: 1;
+  color: #FFFFFF;
+  text-shadow: 2px 2px 0px #E10600;
+}
+
+.f1-text-logo span {
+  color: #E10600;
+  text-shadow: none; /* Единица остается просто красной */
+}
+
+.main-title {
+  text-align: center;
+  color: #FFFFFF;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-size: 2rem;
+  margin: 0;
+}
+
+/* --- Заголовки страниц --- */
+h2 {
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: #FFFFFF;
+  border-left: 4px solid #E10600;
+  padding-left: 15px;
+  margin-bottom: 30px;
+}
+
+/* --- Сетка и карточки Гран-при --- */
+.gp-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.gp-card {
+  background: #1F1F27; /* Темная карточка */
+  padding: 20px;
+  border-radius: 4px; /* Острые углы, минимум скруглений */
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.3s ease;
+  border: 1px solid #2D2D3A;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.gp-card:hover {
+  border-color: #E10600; /* Красная рамка при наведении */
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(225, 6, 0, 0.2);
+}
+
+.gp-card h3 {
+  margin: 0 0 10px 0;
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: #FFF;
+}
+
+.gp-card p {
+  margin: 0;
+  color: #9A9A9A;
+  font-size: 0.9rem;
+}
+
+/* --- Статусы --- */
+.status-badge {
+  display: inline-block;
+  padding: 5px 10px;
+  border-radius: 2px;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  font-weight: 700;
+  letter-spacing: 1px;
+  margin-top: 15px;
+  align-self: flex-start;
+}
+
+.status-done { background-color: #2D2D3A; color: #9A9A9A; }
+.status-upcoming { background-color: #E10600; color: #FFF; }
+
+/* --- Кнопка "Назад" --- */
+.back-link {
+  display: inline-block;
+  margin-bottom: 20px;
+  text-decoration: none;
+  color: #E10600;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 0.9rem;
+  letter-spacing: 1px;
+  transition: color 0.2s;
+}
+
+.back-link:hover {
+  color: #FFF;
+}
+
+/* --- Карточки прогнозов --- */
+.predictions-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 20px;
+}
+
+.prediction-card {
+  background: #1F1F27;
+  padding: 20px;
+  border-radius: 4px;
+  border: 1px solid #2D2D3A;
+  border-top: 4px solid #2D2D3A; /* Цвет риска по умолчанию */
+}
+
+.risk-high { border-top-color: #E10600; }
+.risk-medium { border-top-color: #FFC107; }
+.risk-low { border-top-color: #00D2BE; } /* Бирюзовый (как у McLaren) */
+
+.pred-header {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #2D2D3A;
+}
+
+.position-badge {
+  background: #E10600;
+  color: #FFF;
+  padding: 8px 12px;
+  border-radius: 2px;
+  font-weight: 900;
+  font-size: 1.2rem;
+  min-width: 40px;
+  text-align: center;
+}
+
+.pred-header h3 {
+  margin: 0;
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.team-name {
+  margin-left: auto;
+  font-size: 0.85rem;
+  color: #9A9A9A;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* --- Метрики (Уверенность) --- */
+.metrics {
+  margin-bottom: 20px;
+}
+
+.metric {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  font-size: 0.9rem;
+  color: #9A9A9A;
+}
+
+.progress-bar {
+  width: 60%;
+  background: #15151E;
+  border-radius: 2px;
+  overflow: hidden;
+  height: 20px;
+}
+
+.progress-fill {
+  background: #E10600;
+  color: #FFF;
+  height: 100%;
+  font-size: 0.75rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: width 0.5s ease;
+}
+
+.risk-metric {
+  display: flex;
+  justify-content: space-between;
+  color: #9A9A9A;
+  font-size: 0.9rem;
+}
+
+/* --- Аргументы (Список) --- */
+.arguments {
+  margin-top: 15px;
+  background: #15151E;
+  padding: 15px;
+  border-radius: 2px;
+  border-left: 3px solid #E10600;
+}
+
+.arguments h4 {
+  margin: 0 0 10px 0;
+  color: #E10600;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  letter-spacing: 1px;
+}
+
+.arguments-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.arguments-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 5px 0;
+  border-bottom: 1px dashed #2D2D3A;
+  font-size: 0.85rem;
+}
+
+.arguments-list li:last-child {
+  border-bottom: none;
+}
+
+.arguments-list .separator {
+  height: 1px;
+  background-color: #2D2D3A;
+  margin: 8px 0;
+  padding: 0;
+  border-bottom: none;
+}
+
+.arg-label {
+  color: #9A9A9A;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 0.5px;
+  margin-right: 10px;
+}
+
+.arg-value {
+  color: #FFFFFF;
+  text-align: right;
+}
+
+/* --- Таблица результатов --- */
+.results-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #1F1F27;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.results-table th, .results-table td {
+  padding: 15px;
+  text-align: left;
+  border-bottom: 1px solid #2D2D3A;
+}
+
+.results-table th {
+  background: #15151E;
+  color: #E10600;
+  text-transform: uppercase;
+  font-weight: 700;
+  letter-spacing: 1px;
+  font-size: 0.85rem;
+}
+
+.results-table tr:last-child td {
+  border-bottom: none;
+}
+
+.results-table tr:hover {
+  background: #2D2D3A;
+}
+
+.error-row {
+  background-color: rgba(225, 6, 0, 0.1); /* Легкий красный оттенок для ошибок */
+}
+
+.error-row:hover {
+  background-color: rgba(225, 6, 0, 0.2);
+}
+
+/* --- Адаптивность --- */
+@media (max-width: 768px) {
+  .container {
+    padding: 20px 10px;
+  }
+  .main-title {
+    font-size: 1.5rem;
+  }
+  .f1-logo {
+    height: 35px;
+  }
+  .progress-bar {
+    width: 100%;
+    margin-top: 5px;
+  }
+  .metric {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .results-table {
+    font-size: 0.8rem;
+  }
+  .results-table th, .results-table td {
+    padding: 10px;
+  }
+
+  /* --- Баннер ошибки --- */
+.error-banner {
+  background-color: #2D0A0A; /* Темно-красный фон */
+  border: 1px solid #E10600;
+  border-radius: 4px;
+  padding: 30px;
+  margin-top: 20px;
+  text-align: center;
+}
+
+.error-banner h3 {
+  color: #E10600;
+  margin-top: 0;
+  margin-bottom: 10px;
+  font-size: 1.2rem;
+  text-transform: uppercase;
+}
+
+.error-banner p {
+  color: #FFB3B3; /* Светло-красный текст */
+  font-size: 1rem;
+  margin: 0;
+}
+}

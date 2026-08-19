@@ -1,0 +1,334 @@
+databaseChangeLog:
+
+  # 1. Таблица пилотов
+  - changeSet:
+      id: 1-create-drivers-table
+      author: f1predictor
+      changes:
+        - createTable:
+            tableName: drivers
+            columns:
+              - column:
+                  name: id
+                  type: serial
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(100)
+                  constraints:
+                    unique: true
+                    nullable: false
+              - column:
+                  name: team
+                  type: varchar(100)
+              - column:
+                  name: driver_number
+                  type: int
+                  constraints:
+                    unique: true
+
+  # 2. Таблица Гран-при
+  - changeSet:
+      id: 2-create-grands-prix-table
+      author: f1predictor
+      changes:
+        - createTable:
+            tableName: grands_prix
+            columns:
+              - column:
+                  name: id
+                  type: serial
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(100)
+              - column:
+                  name: country
+                  type: varchar(100)
+              - column:
+                  name: race_date
+                  type: timestamp
+              - column:
+                  name: stage
+                  type: varchar(20)
+                  defaultValue: 'UPCOMING'
+
+  # 3. Таблица новостей
+  - changeSet:
+      id: 3-create-news-table
+      author: f1predictor
+      changes:
+        - createTable:
+            tableName: news
+            columns:
+              - column:
+                  name: id
+                  type: serial
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: gp_id
+                  type: int
+                  constraints:
+                    foreignKeyName: fk_news_gp
+                    references: grands_prix(id)
+              - column:
+                  name: source
+                  type: varchar(50)
+              - column:
+                  name: title
+                  type: text
+              - column:
+                  name: url
+                  type: text
+              - column:
+                  name: published_at
+                  type: timestamp
+              - column:
+                  name: sentiment_score
+                  type: numeric
+                  defaultValueNumeric: 0.0
+              - column:
+                  name: risk_keywords
+                  type: text[]
+              - column:
+                  name: mentioned_drivers
+                  type: text[]
+              - column:
+                  name: is_processed
+                  type: boolean
+                  defaultValueBoolean: false
+              - column:
+                  name: raw_xml
+                  type: text
+        - createIndex:
+            indexName: idx_news_url
+            tableName: news
+            columns:
+              - column:
+                  name: url
+
+  # 4. Таблица исторических результатов
+  - changeSet:
+      id: 4-create-historical-results-table
+      author: f1predictor
+      changes:
+        - createTable:
+            tableName: historical_results
+            columns:
+              - column:
+                  name: id
+                  type: serial
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: driver_id
+                  type: int
+                  constraints:
+                    foreignKeyName: fk_hist_driver
+                    references: drivers(id)
+              - column:
+                  name: gp_name
+                  type: varchar(100)
+              - column:
+                  name: season
+                  type: int
+              - column:
+                  name: final_position
+                  type: int
+              - column:
+                  name: team_name
+                  type: varchar(100)
+              - column:
+                  name: session_key
+                  type: int
+        - createIndex:
+            indexName: idx_hist_driver_gp
+            tableName: historical_results
+            columns:
+              - column:
+                  name: driver_id
+              - column:
+                  name: gp_name
+        - addUniqueConstraint:
+            constraintName: uk_historical_driver_gp_season
+            tableName: historical_results
+            columnNames: driver_id, gp_name, season
+
+  # 5. Таблица результатов практик
+  - changeSet:
+      id: 5-create-practice-results-table
+      author: f1predictor
+      changes:
+        - createTable:
+            tableName: practice_results
+            columns:
+              - column:
+                  name: id
+                  type: serial
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: gp_id
+                  type: int
+                  constraints:
+                    foreignKeyName: fk_practice_gp
+                    references: grands_prix(id)
+              - column:
+                  name: driver_id
+                  type: int
+                  constraints:
+                    foreignKeyName: fk_practice_driver
+                    references: drivers(id)
+              - column:
+                  name: session_type
+                  type: varchar(10)
+              - column:
+                  name: position
+                  type: int
+              - column:
+                  name: lap_time_ms
+                  type: int
+              - column:
+                  name: gap_to_p1_ms
+                  type: int
+        - addUniqueConstraint:
+            constraintName: uk_practice_gp_driver_session
+            tableName: practice_results
+            columnNames: gp_id, driver_id, session_type
+
+  # 6. Таблица результатов квалификации
+  - changeSet:
+      id: 6-create-qualifying-results-table
+      author: f1predictor
+      changes:
+        - createTable:
+            tableName: qualifying_results
+            columns:
+              - column:
+                  name: id
+                  type: serial
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: gp_id
+                  type: int
+                  constraints:
+                    foreignKeyName: fk_quali_gp
+                    references: grands_prix(id)
+              - column:
+                  name: driver_id
+                  type: int
+                  constraints:
+                    foreignKeyName: fk_quali_driver
+                    references: drivers(id)
+              - column:
+                  name: position
+                  type: int
+              - column:
+                  name: starting_grid
+                  type: int
+              - column:
+                  name: q3_time_ms
+                  type: int
+        - addUniqueConstraint:
+            constraintName: uk_qualifying_gp_driver
+            tableName: qualifying_results
+            columnNames: gp_id, driver_id
+
+  # 7. Таблица прогнозов
+  - changeSet:
+      id: 7-create-predictions-table
+      author: f1predictor
+      changes:
+        - createTable:
+            tableName: predictions
+            columns:
+              - column:
+                  name: id
+                  type: serial
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: gp_id
+                  type: int
+                  constraints:
+                    foreignKeyName: fk_pred_gp
+                    references: grands_prix(id)
+              - column:
+                  name: driver_id
+                  type: int
+                  constraints:
+                    foreignKeyName: fk_pred_driver
+                    references: drivers(id)
+              - column:
+                  name: predicted_position
+                  type: int
+              - column:
+                  name: confidence
+                  type: numeric
+              - column:
+                  name: risk_level
+                  type: varchar(20)
+              - column:
+                  name: arguments
+                  type: jsonb
+              - column:
+                  name: stage
+                  type: varchar(20)
+              - column:
+                  name: created_at
+                  type: timestamp
+                  defaultValueComputed: CURRENT_TIMESTAMP
+
+  # 8. Таблица реальных результатов (для подсчета ошибки)
+  - changeSet:
+      id: 8-create-actual-results-table
+      author: f1predictor
+      changes:
+        - createTable:
+            tableName: actual_results
+            columns:
+              - column:
+                  name: id
+                  type: serial
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: gp_id
+                  type: int
+                  constraints:
+                    foreignKeyName: fk_actual_gp
+                    references: grands_prix(id)
+              - column:
+                  name: driver_id
+                  type: int
+                  constraints:
+                    foreignKeyName: fk_actual_driver
+                    references: drivers(id)
+              - column:
+                  name: final_position
+                  type: int
+              - column:
+                  name: error_margin
+                  type: int
+              - column:
+                  name: error_type
+                  type: varchar(30)
+              - column:
+                  name: error_explanation
+                  type: text
+        - addUniqueConstraint:
+            constraintName: uk_actual_gp_driver
+            tableName: actual_results
+            columnNames: gp_id, driver_id
